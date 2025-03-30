@@ -12,7 +12,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 app.use(cors({
-    origin:['http://localhost:8080' ,'https://www.jobsyfitness.com', 'https://67e997e36073b1000bed2fc8--jocular-kashata-4fa45c.netlify.app'],
+    origin:['http://localhost:8080' ,'https://www.jobsyfitness.com', 'https://67e9996406dcdc7b904ff8c8--jocular-kashata-4fa45c.netlify.app'],
     credentials: true, 
     methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'], 
     allowedHeaders: ['Content-Type','Authorization'], 
