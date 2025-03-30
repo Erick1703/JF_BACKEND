@@ -12,7 +12,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 app.use(cors({
-    origin: 'http://localhost:8080', 
+    origin:['http://localhost:8080' ,'https://www.jobsyfitness.com'],
     credentials: true, 
     methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'], 
     allowedHeaders: ['Content-Type','Authorization'], 
