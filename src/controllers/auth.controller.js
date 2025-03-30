@@ -78,8 +78,8 @@ try{
 
   const trainerSave = await newtrainer.save();
 
-  const token =  await CreateAccessToken({ id: trainerSave._id, role: "trainer"});
-    res.cookie("token", token)
+  // const token =  await CreateAccessToken({ id: trainerSave._id, role: "trainer"});
+  //   res.cookie("token", token)
  
 
     res.send("Entrenador registrado");
