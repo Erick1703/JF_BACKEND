@@ -4,14 +4,3 @@ node_modules/
 # Ignorar archivo de variables de entorno
 .env
 
-# Ignorar archivos de log
-*.log
-
-# Ignorar archivos de sistema
-.DS_Store
-
-# Ignorar configuración de editor (como VS Code)
-.vscode/
-
-# Ignorar directorios de build
-build/
