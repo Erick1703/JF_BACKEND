@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 import { CreateAccessToken } from "../libs/jwt.js";
 
 export const registerClient = async (req, res) => {
-  const { nombre, apellido, email, password, telefono, trainer } = req.body;
+  const { nombre, apellido, email, telefono, trainer } = req.body;
+  let { password } = req.body;
 
   try {
     // Validar que se proporcione el ID del entrenador
@@ -13,7 +14,12 @@ export const registerClient = async (req, res) => {
       return res.status(400).json({ message: "El ID del entrenador es requerido" });
     }
 
-    // Hashear la contraseña
+    // Si no se proporciona una contraseña, usar "jobsyfitness" por defecto
+    if (!password) {
+      password = "jobsyfitness";
+    }
+
+    // Hashear la contraseña (ya sea la proporcionada o la por defecto)
     const passhash = await bcrypt.hash(password, 10);
 
     // Crear el nuevo cliente
@@ -43,7 +49,6 @@ export const registerClient = async (req, res) => {
             nombre: clientSave.nombre,
             apellido: clientSave.apellido,
             email: clientSave.email,
-        
           },
         },
       },
