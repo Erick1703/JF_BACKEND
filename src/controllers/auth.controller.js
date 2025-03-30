@@ -4,6 +4,45 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { CreateAccessToken } from "../libs/jwt.js";
 
+
+export const changePassword = async (req, res) => {
+  const { email, telefono, newPassword } = req.body;
+
+  try {
+    // Validar que todos los campos estén presentes
+    if (!email || !telefono || !newPassword) {
+      return res.status(400).json({ message: "Correo, teléfono y nueva contraseña son requeridos" });
+    }
+
+    // Buscar al usuario (puede ser Cliente o Trainer) por email y teléfono
+    let user = await Cliente.findOne({ email, telefono });
+    let userType = 'client';
+
+    if (!user) {
+      user = await Trainer.findOne({ email, telefono });
+      userType = 'trainer';
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado con ese correo y teléfono" });
+    }
+
+    // Hashear la nueva contraseña
+    const passhash = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar la contraseña del usuario
+    user.password = passhash;
+    await user.save();
+
+    // Respuesta exitosa
+    res.status(200).json({ message: "Contraseña actualizada exitosamente", userType });
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error.message);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+
 export const registerClient = async (req, res) => {
   const { nombre, apellido, email, telefono, trainer } = req.body;
   let { password } = req.body;
