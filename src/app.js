@@ -16,8 +16,8 @@ const app = express();
 
 // Configuración de CORS
 const allowedOrigins = [
-  'https://jocular-kashata-4fa45c.netlify.app', // Origen base sin hash
-  'https://67e9996406dcdc7b904ff8c8--jocular-kashata-4fa45c.netlify.app', // Origen dinámico con hash
+  'https://jobsyfitness.com', // Origen base sin hash
+  'www.jobsyfitness.com', // Origen dinámico con hash
   'http://localhost:8080', // Para desarrollo local
 ];
 
