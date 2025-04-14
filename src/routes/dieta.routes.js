@@ -17,22 +17,22 @@ import { protectRoute } from '../middlewares/validate.js';
 const router = express.Router();
 
 // CRUD para Diet
-router.post("/diets",protectRoute(['trainer']), createDiet);
-router.get("/diets",protectRoute(['client']), getDiets);
-router.put("/diets/:id",protectRoute(['trainer']), updateDiet);
-router.get("/diets/:id",protectRoute(['trainer', 'client']), getDietById);
-router.delete("/diets/:id",protectRoute(['trainer']), deleteDiet);
+router.post("/diets", createDiet);
+router.get("/diets", getDiets);
+router.put("/diets/:id", updateDiet);
+router.get("/diets/:id", getDietById);
+router.delete("/diets/:id", deleteDiet);
 
 // Rutas para asignación y eliminación de dietas en Cliente
-router.post("/diets/:dietId/assign-to-client/:clientId",protectRoute(['trainer']), assignDietToClient);
-router.delete("/diets/:dietId/remove-from-client/:clientId",protectRoute(['trainer']), removeDietFromClient);
+router.post("/diets/:dietId/assign-to-client/:clientId", assignDietToClient);
+router.delete("/diets/:dietId/remove-from-client/:clientId", removeDietFromClient);
 
 // Nueva ruta para añadir comidas
-router.post("/diets/:dietId/meals",protectRoute(['trainer']), addMealToDiet);
+router.post("/diets/:dietId/meals", addMealToDiet);
 
 // Nueva ruta para obtener dietas del entrenador (corregida)
-router.get("/diets/trainer/:trainerId",protectRoute(['trainer']), getTrainerDiets);
-router.get("/:dietId/clients",protectRoute(['trainer']), getClientsByDietId);
-router.get("/:clientId/diet",protectRoute(['trainer', 'client']), getClientDiet);
-router.delete("/diets/:dietId/meals",protectRoute(['trainer']), deleteMealFromDiet);
+router.get("/diets/trainer/:trainerId", getTrainerDiets);
+router.get("/:dietId/clients", getClientsByDietId);
+router.get("/:clientId/diet", getClientDiet);
+router.delete("/diets/:dietId/meals", deleteMealFromDiet);
 export default router;

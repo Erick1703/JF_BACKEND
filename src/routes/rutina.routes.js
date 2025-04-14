@@ -4,10 +4,10 @@ import { protectRoute } from '../middlewares/validate.js';
 const router = Router();
 
 //obtener todas las rutinas
-router.get("/rutinas",protectRoute(['trainer','client']), getAllRutinas)
+router.get("/rutinas", getAllRutinas)
 
 //obtener una rutina por id
-router.get("/rutinas/:id",protectRoute(['trainer', 'client']),getRutinaById )
+router.get("/rutinas/:id",getRutinaById )
 
 //agregar rutinas
 router.post("/add-rutinas", createRutina)
@@ -16,15 +16,15 @@ router.post("/add-rutinas", createRutina)
 router.put("/update-rutinas/:id",updateRutina )
 
 //eliminar rutinas
-router.delete("/delete-rutinas/:id",protectRoute(['trainer']), deleteRutina)
+router.delete("/delete-rutinas/:id", deleteRutina)
 
-router.get('/trainer/:trainerId/rutinas',protectRoute(['trainer']), getRoutinesByTrainer);
+router.get('/trainer/:trainerId/rutinas', getRoutinesByTrainer);
 
-router.post('/clients/assign-multiple-routines',protectRoute(['trainer']), assignMultipleRoutinesToClient);
+router.post('/clients/assign-multiple-routines', assignMultipleRoutinesToClient);
 
-router.get('/clients/:clientId/routines',protectRoute(['client']), getClientRoutines);
+router.get('/clients/:clientId/routines', getClientRoutines);
 
 
 // Eliminar una rutina solo de un cliente
-router.delete('/clients/:clientId/routines/:routineId',protectRoute(['trainer']), removeRoutineFromClient);
+router.delete('/clients/:clientId/routines/:routineId', removeRoutineFromClient);
 export default router;
