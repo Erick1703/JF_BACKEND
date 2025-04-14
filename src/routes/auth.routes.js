@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {registerClient, registerTrainer, loginCliente, loginTrainer, logout, changePassword} from "../controllers/auth.controller.js";
-import { authorizeRole } from "../middlewares/validate.js";
+import { protectRoute } from '../middlewares/validate.js';
 const router = Router();
 //clientes
 router.post("/register-client", registerClient)

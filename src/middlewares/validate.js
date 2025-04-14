@@ -1,25 +1,27 @@
-import jwt from "jsonwebtoken";
+// middleware/auth.js
+import jwt from 'jsonwebtoken';
 
-export const authorizeRole = (requiredRoles) => {
+export const protectRoute = (allowedRoles) => {
   return (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1]; // Asume Bearer token
+
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     try {
-      const token = req.cookies.token; // Obtén el token desde las cookies
-      if (!token) {
-        return res.status(401).json({ message: "Acceso no autorizado" });
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      
+      // Verifica si el rol del usuario está en los roles permitidos
+      if (!allowedRoles.includes(decoded.role)) {
+        return res.status(403).json({ message: 'Access denied: insufficient permissions' });
       }
 
-      // Verifica y decodifica el token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Comprueba si el rol del usuario está dentro de los roles permitidos
-      if (!requiredRoles.includes(decoded.role)) {
-        return res.status(403).json({ message: "Acceso denegado" });
-      }
-
-      req.user = decoded; // Adjunta los datos del token al objeto `req`
-      next(); // Permite continuar si el rol es válido
+      // Agrega el usuario decodificado al request
+      req.user = decoded;
+      next();
     } catch (error) {
-      res.status(500).json({ message: "Error en la validación del rol" });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
   };
 };
