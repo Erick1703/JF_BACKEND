@@ -4,7 +4,7 @@ import { protectRoute } from '../middlewares/validate.js';
 const router = Router();
 
 //obtener todas las rutinas
-router.get("/rutinas",protectRoute(['trainer', 'client']), getAllRutinas)
+router.get("/rutinas",protectRoute(['trainer','client']), getAllRutinas)
 
 //obtener una rutina por id
 router.get("/rutinas/:id",protectRoute(['trainer', 'client']),getRutinaById )
@@ -22,7 +22,7 @@ router.get('/trainer/:trainerId/rutinas',protectRoute(['trainer']), getRoutinesB
 
 router.post('/clients/assign-multiple-routines',protectRoute(['trainer']), assignMultipleRoutinesToClient);
 
-router.get('/clients/:clientId/routines',protectRoute(['trainer', 'client']), getClientRoutines);
+router.get('/clients/:clientId/routines',protectRoute(['client']), getClientRoutines);
 
 
 // Eliminar una rutina solo de un cliente
