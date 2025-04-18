@@ -10,13 +10,13 @@ router.get("/rutinas", getAllRutinas)
 router.get("/rutinas/:id",getRutinaById )
 
 //agregar rutinas
-router.post("/add-rutinas", createRutina)
+router.post("/add-rutinas",protectRoute(['trainer']), createRutina)
 
 //actualizar rutinas
-router.put("/update-rutinas/:id",updateRutina )
+router.put("/update-rutinas/:id",protectRoute(['trainer']),updateRutina )
 
 //eliminar rutinas
-router.delete("/delete-rutinas/:id", deleteRutina)
+router.delete("/delete-rutinas/:id",protectRoute(['trainer']), deleteRutina)
 
 router.get('/trainer/:trainerId/rutinas', getRoutinesByTrainer);
 
