@@ -2,15 +2,41 @@ import Rutina from "../models/rutina.model.js";
 import Client from "../models/cliente.model.js";
 import mongoose from "mongoose";
 export const createRutina = async (req, res) => {
-  const { nombre, trainer, descripcion, videos } = req.body;
+  const { nombre, trainer, descripcion, sets } = req.body;
 
   try {
+    // Validaciones básicas
+    if (!nombre || !trainer) {
+      return res.status(400).json({ message: "El nombre y el trainer son obligatorios" });
+    }
+
+    if (!Array.isArray(sets) || sets.length === 0) {
+      return res.status(400).json({ message: "Debe incluir al menos un set de ejercicios" });
+    }
+
+    // Validar que cada set tenga el formato correcto
+    for (const set of sets) {
+      if (!set.tipo || !['normal', 'superserie', 'serie_compuesta'].includes(set.tipo)) {
+        return res.status(400).json({ message: "Cada set debe tener un tipo válido: normal, superserie o serie_compuesta" });
+      }
+      if (!set.orden || typeof set.orden !== 'number') {
+        return res.status(400).json({ message: "Cada set debe tener un orden numérico" });
+      }
+      if (!Array.isArray(set.ejercicios) || set.ejercicios.length === 0) {
+        return res.status(400).json({ message: "Cada set debe contener al menos un ejercicio" });
+      }
+      for (const ejercicio of set.ejercicios) {
+        if (!ejercicio.ejercicio || !ejercicio.url) {
+          return res.status(400).json({ message: "Cada ejercicio debe tener un nombre y una URL" });
+        }
+      }
+    }
+
     const nuevaRutina = new Rutina({
       nombre,
       trainer,
       descripcion,
-      videos,
-      
+      sets,
     });
 
     const rutinaGuardada = await nuevaRutina.save();
@@ -23,31 +49,56 @@ export const createRutina = async (req, res) => {
   }
 };
 
-
 export const updateRutina = async (req, res) => {
-    const { id } = req.params;
-    const { nombre, descripcion, videos } = req.body;
-  
-    try {
-      const rutinaActualizada = await Rutina.findByIdAndUpdate(
-        id,
-        { nombre, descripcion, videos },
-        { new: true } // Retorna el documento actualizado
-      );
-  
-      if (!rutinaActualizada) {
-        return res.status(404).json({ message: "Rutina no encontrada" });
-      }
-  
-      res.status(200).json({
-        message: "Rutina actualizada exitosamente",
-        data: rutinaActualizada,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Error al actualizar la rutina", error: error.message });
-    }
-  };
+  const { id } = req.params;
+  const { nombre, descripcion, sets } = req.body;
 
+  try {
+    // Validaciones básicas
+    if (!nombre) {
+      return res.status(400).json({ message: "El nombre es obligatorio" });
+    }
+
+    if (!Array.isArray(sets) || sets.length === 0) {
+      return res.status(400).json({ message: "Debe incluir al menos un set de ejercicios" });
+    }
+
+    // Validar que cada set tenga el formato correcto
+    for (const set of sets) {
+      if (!set.tipo || !['normal', 'superserie', 'serie_compuesta'].includes(set.tipo)) {
+        return res.status(400).json({ message: "Cada set debe tener un tipo válido: normal, superserie o serie_compuesta" });
+      }
+      if (!set.orden || typeof set.orden !== 'number') {
+        return res.status(400).json({ message: "Cada set debe tener un orden numérico" });
+      }
+      if (!Array.isArray(set.ejercicios) || set.ejercicios.length === 0) {
+        return res.status(400).json({ message: "Cada set debe contener al menos un ejercicio" });
+      }
+      for (const ejercicio of set.ejercicios) {
+        if (!ejercicio.ejercicio || !ejercicio.url) {
+          return res.status(400).json({ message: "Cada ejercicio debe tener un nombre y una URL" });
+        }
+      }
+    }
+
+    const rutinaActualizada = await Rutina.findByIdAndUpdate(
+      id,
+      { nombre, descripcion, sets },
+      { new: true } // Retorna el documento actualizado
+    );
+
+    if (!rutinaActualizada) {
+      return res.status(404).json({ message: "Rutina no encontrada" });
+    }
+
+    res.status(200).json({
+      message: "Rutina actualizada exitosamente",
+      data: rutinaActualizada,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar la rutina", error: error.message });
+  }
+};
   
   export const deleteRutina = async (req, res) => {
     const { id } = req.params;
