@@ -33,6 +33,6 @@ router.post("/diets/:dietId/meals",protectRoute(['trainer']), addMealToDiet);
 // Nueva ruta para obtener dietas del entrenador (corregida)
 router.get("/diets/trainer/:trainerId",protectRoute(['trainer']), getTrainerDiets);
 router.get("/:dietId/clients",protectRoute(['trainer']), getClientsByDietId);
-router.get("/:clientId/diet",protectRoute(['trainer']), getClientDiet);
+router.get("/:clientId/diet", getClientDiet);
 router.delete("/diets/:dietId/meals",protectRoute(['trainer']), deleteMealFromDiet);
 export default router;
