@@ -17,7 +17,7 @@ const app = express();
 // Configuración de CORS
 const allowedOrigins = [
   'https://jobsyfitness.com', // Origen base sin hash
-  'www.jobsyfitness.com', // Origen dinámico con hash
+  'https://www.jobsyfitness.com', // Origen dinámico con hash
   'http://localhost:8080', // Para desarrollo local
 ];
 
